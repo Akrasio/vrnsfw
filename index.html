@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="keywords" content="WebXR, VR, City Sling VR" />
+    <meta name="description" content="City Sling VR, WebXR game maintained by Rik Cabanier">
+    <title>City Sling VR Experience</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NG82SD287B"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-NG82SD287B');
+    </script>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/diarmidmackenzie/instanced-mesh@v0.7.0/src/instanced-mesh.min.js"></script>
+    <script src="hand.js"></script>
+    <script src="tile.js"></script>
+    <script src="map.js"></script>
+    <script src="player.js"></script>
+    <script src="web.js"></script>
+    <script src="gradient.js"></script>
+    <script src="radio.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1562826659403412" crossorigin="anonymous"></script>
+  </head>
+  <style>
+    .slider-checkbox {
+      position: relative;
+    }
+    .slider-checkbox input {
+      margin: 0px;
+      margin-top: 1px;
+      cursor: pointer;
+      opacity: 0;
+      filter: alpha(opacity=0);
+      -moz-opacity: 0;
+      -khtml-opacity: 0;
+      opacity: 0;
+      position: absolute;
+      z-index: 1;
+      top: 0px;
+      left: 0px;
+      background: red;
+      width: 40px;
+      height: 20px;
+      &:checked + .label {
+        &:before {
+          background-color: #1877c1;
+          content: "";
+          padding-left: 6px;
+        }
+        &:after {
+          left: 21px;
+        }
+      }
+    }
+    .slider-checkbox label {
+      position: relative;
+      padding-left: 46px;
+      &:before, &:after {
+        position: absolute;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+        transition: background-color 0.3s, left 0.3s;
+      }
+      &:before {
+        content: "";
+        color: #fff;
+        box-sizing: border-box;
+        padding-left: 23px;
+        font-size: 12px;
+        line-height: 20px;
+        background-color: #888;
+        left: 0px;
+        top: 0px;
+        height: 20px;
+        width: 40px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+      }
+      &:after {
+        content: "";
+        letter-spacing: 20px;
+        background: #fff;
+        left: 1px;
+        top: 1px;
+        height: 18px;
+        width: 18px;
+      }
+    }
+
+    /* CSS */
+    .button-17 {
+      align-items: center;
+      appearance: none;
+      background-color: #fff;
+      border-radius: 24px;
+      border-style: none;
+      box-shadow: rgba(0, 0, 0, .2) 0 3px 5px -1px,rgba(0, 0, 0, .14) 0 6px 10px 0,rgba(0, 0, 0, .12) 0 1px 18px 0;
+      box-sizing: border-box;
+      color: #3c4043;
+      cursor: pointer;
+      display: inline-flex;
+      fill: currentcolor;
+      font-family: "Google Sans",Roboto,Arial,sans-serif;
+      font-size: 40px;
+      font-weight: 500;
+      height: 48px;
+      justify-content: center;
+      letter-spacing: .25px;
+      line-height: normal;
+      max-width: 100%;
+      overflow: visible;
+      padding: 2px 24px;
+      position: relative;
+      text-align: center;
+      text-transform: none;
+      transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1),opacity 15ms linear 30ms,transform 270ms cubic-bezier(0, 0, .2, 1) 0ms;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      width: 60%;
+      will-change: transform,opacity;
+      z-index: 0;
+      transform: translateX(50%);
+    }
+
+    .button-17:hover {
+      background: #F6F9FE;
+      color: #174ea6;
+    }
+
+    .button-17:active {
+      box-shadow: 0 4px 4px 0 rgb(60 64 67 / 30%), 0 8px 12px 6px rgb(60 64 67 / 15%);
+      outline: none;
+    }
+
+    .button-17:focus {
+      outline: none;
+      border: 2px solid #4285f4;
+    }
+
+    .button-17:not(:disabled) {
+      box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
+    }
+
+    .button-17:not(:disabled):hover {
+      box-shadow: rgba(60, 64, 67, .3) 0 2px 3px 0, rgba(60, 64, 67, .15) 0 6px 10px 4px;
+    }
+
+    .button-17:not(:disabled):focus {
+      box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
+    }
+
+    .button-17:not(:disabled):active {
+      box-shadow: rgba(60, 64, 67, .3) 0 4px 4px 0, rgba(60, 64, 67, .15) 0 8px 12px 6px;
+    }
+
+    .button-17:disabled {
+      box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
+    }
+  </style>
+
+  <body style="position: relative">
+    <a-scene
+      renderer="highRefreshRate: false; colorManagement: true;"
+      fog="type: linear; color: #eafaff; far: 500;"
+      background="color: #eafaff;"
+    >
+      <a-sky
+        id="sky"
+        theta-length="110"
+        radius="900"
+        material="topColor: #87ceeb; bottomColor: #eafaff; shader: gradientshader; fog: false;"
+      ></a-sky>
+
+      <a-assets>
+        <img
+          id="style1-building1-texture"
+          src="assets/s1b1.webp"
+          preload="auto"
+        />
+        <img
+          id="style1-building2-texture"
+          src="assets/s1b2.webp"
+          preload="auto"
+        />
+        <img
+          id="style1-building3-texture"
+          src="assets/s1b3.webp"
+          preload="auto"
+        />
+        <img
+          id="style1-building4-texture"
+          src="assets/s1b4.webp"
+          preload="auto"
+        />
+        <img
+          id="style1-building5-texture"
+          src="assets/s1b5.webp"
+          preload="auto"
+        />
+        <img
+          id="style1-building6-texture"
+          src="assets/s1b6.webp"
+          preload="auto"
+        />
+        <img
+          id="style1-building7-texture"
+          src="assets/s1b7.webp"
+          preload="auto"
+        />
+        <img
+          id="style1-building8-texture"
+          src="assets/s1b8.webp"
+          preload="auto"
+        />
+        <img
+          id="style1-building9-texture"
+          src="assets/s1b9.webp"
+          preload="auto"
+        />
+        <img
+          id="style1-building10-texture"
+          src="assets/s1b10.webp"
+          preload="auto"
+        />
+        <img
+          id="style1-building11-texture"
+          src="assets/s1b11.webp"
+          preload="auto"
+        />
+        <img id="style1-ground1-texture" src="assets/s1g1.webp" preload="auto" />
+        <img id="style1-road1-texture" src="assets/s1r1.webp" preload="auto" />
+        <a-mixin
+          id="tile"
+          tile="
+            buildingTextures: #style1-building1-texture, #style1-building2-texture, #style1-building3-texture, #style1-building4-texture, #style1-building5-texture, #style1-building6-texture, #style1-building7-texture, #style1-building8-texture, #style1-building9-texture, #style1-building10-texture, #style1-building11-texture;
+            buildingColors: #9eafcb, #a6bee4, #cca49a, #818c9f, #9aaec6, #484a57, #c7afa3, #7b9fbf, #123459, #a3b3cd, #c5a495;
+            groundTextures: #style1-ground1-texture;
+            groundColors: #9aaacc;
+            roadTextures: #style1-road1-texture;
+            roadColors: #373943;"
+        ></a-mixin>
+        <a-asset-item
+          id="crystal"
+          src="assets/crystal-fast.glb"
+          preload="auto"
+        ></a-asset-item>
+        <audio
+          id="sound-shoot-web"
+          src="assets/shoot-web.mp3"
+          preload="auto"
+        ></audio>
+        <audio id="sound-no-web" src="assets/no-web.mp3" preload="auto"></audio>
+        <audio
+          id="sound-hit-wall"
+          src="assets/hit-wall.mp3"
+          preload="auto"
+        ></audio>
+        <audio
+          id="sound-hit-ground"
+          src="assets/hit-ground.mp3"
+          preload="auto"
+        ></audio>
+        <audio
+          id="sound-hit-crystal"
+          src="assets/hit-crystal.mp3"
+        ></audio>
+        <audio
+          id="sound-crystal"
+          src="assets/crystal.webm"
+        ></audio>
+        <a-plane id="groundPlane" width="160" height="160" color="red"></a-plane>
+      </a-assets>
+
+      <a-entity light="type:ambient; color:#e8e8e8"></a-entity>
+      <a-entity
+        light="type: directional; color: #FFF; intensity: 0.6;"
+        position="-0.5 1 1"
+      ></a-entity>
+
+      <a-entity
+        id="map"
+        map=""
+        pool="mixin: tile; size: 50; container: #map; dynamic: true;"
+      ></a-entity>
+
+      <a-entity player="mass: 70" position="0 0 0"></a-entity>
+
+      <a-entity id="web-right" web="" position="0 0 0"></a-entity>
+      <a-entity id="web-left" web="" position="0 0 0"></a-entity>
+
+      <a-entity
+        radio="tracks: 516082875, 495963048, 564400320, 520701015, 503039229, 283366526, 27657719, 4476253; weights: 50, 50, 50, 50, 50, 50, 30, 20;"
+      ></a-entity>
+    </a-scene>
+
+    <div
+      style="
+        z-index: 1;
+        position: absolute;
+        top: 10%;
+        left: 5%;
+        right: 5%;
+        padding: 1% 20% 1% 5%;
+        font-family: sans-serif, monospace;
+        font-size: 20px;
+        font-weight: 300;
+        background-repeat: no-repeat;
+        background-color: #7b7b7b;
+        background-position-x: right;
+        background-size: contain;
+        border-radius: 20px;
+      "
+    >
+      <p>
+        <span style="color: white">Movement:</span> Hold the triggers to shoot
+        grappling hooks and zip through the city.
+      </p>
+      <p>
+        <span style="color: white">Challenge:</span> How many crystals can you
+        collect without hitting walls?
+      </p>
+      <p>
+        <span style="color: white">Advanced:</span> Hold thumbstick up/down
+        before shooting to control length. Hold grip button for sharper turns.
+      </p>
+      <p style="color: white">
+        Click the VR button to start! Browser with WebXR
+        support required.
+      </p>
+
+      <section class="slider-checkbox">
+        <input type="checkbox" id="multiplayer" aria-label="multi player"/>
+        <label class="label" style="color: white">Multiplayer mode. Beta and janky. Track others by following the green spheres.</label>
+      </section>
+
+      <section class="slider-checkbox">
+        <input type="checkbox" id="advanced" aria-label="Advanced setting"/>
+        <label class="label" style="color: white">Advanced mode. Reset score if you hit the ground or a building</label>
+      </section>
+
+      <br>
+      
+      <button class="button-17" id="startXRButton" role="button">Enter VR</button>
+
+      <br>
+
+      <p style="font-size: 12px">
+        Unofficial, fan-made, open source -
+        <a
+          href="https://github.com/cabanier/cityslingvr"
+          style="font-size: 12px; color: black"
+          >https://github.com/cabanier/cityslingvr</a
+        >
+      </p>
+      <p style="font-size: 12px;">Originally created by - <a href="https://github.com/talkol" style="font-size: 12px; color: black;">Tal Kol</a>. Updated by - <a href="https://github.com/cabanier" style="font-size: 12px; color: black;">Rik Cabanier</a></p>
+    </div>
+  </body>
+  <script>
+    // Get a reference to the button
+    const startXRButton = document.getElementById("startXRButton");
+    if ('xr' in navigator) {
+      // Add a click event listener to the button
+      startXRButton.addEventListener("click", () => {
+        // Check if WebXR is supported by the browser
+        if ('xr' in navigator) {
+          // Request a WebXR session
+          const scene = document.querySelector("a-scene");
+          scene.enterVR();
+        } else {
+          console.error('WebXR is not supported in this browser.');
+        }
+      });
+    } else {
+      startXRButton.hidden = true;
+    }
+  </script>
+</html>
